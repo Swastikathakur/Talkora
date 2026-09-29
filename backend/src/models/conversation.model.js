@@ -62,14 +62,14 @@ const conversationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// No `next` callback here on purpose — modern Mongoose (v7+, and required
-// as of v9) expects document pre-hooks to be synchronous functions that
-// throw, or async functions that reject. The old `function(next) { next(err) }`
-// callback style is no longer reliably invoked with a callback argument.
+
 conversationSchema.pre('validate', function () {
   if (!this.isGroup && this.participants.length !== 2) {
-    throw new Error('A private conversation must have exactly 2 participants');
+    throw new Error(
+      'A private conversation must have exactly 2 participants'
+    );
   }
+
   if (this.isGroup && !this.groupName) {
     throw new Error('Group conversations require a groupName');
   }
